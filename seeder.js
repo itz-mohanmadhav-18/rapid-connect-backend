@@ -5,7 +5,8 @@ const User = require('./models/User');
 const BaseCamp = require('./models/BaseCamp');
 const SOSRequest = require('./models/SOSRequest');
 const Donation = require('./models/Donation');
-const { users, baseCamps, sosRequests, donations } = require('./utils/seedData');
+const Alert = require('./models/Alert');
+const { users, baseCamps, sosRequests, donations, alerts } = require('./utils/seedData');
 
 // Load env vars
 dotenv.config();
@@ -21,6 +22,7 @@ const importData = async () => {
     await BaseCamp.deleteMany();
     await SOSRequest.deleteMany();
     await Donation.deleteMany();
+    await Alert.deleteMany();
 
     console.log('Data cleared...');
 
@@ -31,6 +33,16 @@ const importData = async () => {
     // Get user IDs for references
     const responder = createdUsers.find(user => user.role === 'responder');
     const donor = createdUsers.find(user => user.role === 'donor');
+
+    // Add responder ID to alerts
+    const alertsWithUser = alerts.map(alert => ({
+      ...alert,
+      createdBy: responder._id
+    }));
+
+    // Create alerts
+    const createdAlerts = await Alert.create(alertsWithUser);
+    console.log(`${createdAlerts.length} alerts created`);
 
     // Create base camps
     const baseCampsWithVolunteers = baseCamps.map(camp => ({
@@ -75,6 +87,7 @@ const deleteData = async () => {
     await BaseCamp.deleteMany();
     await SOSRequest.deleteMany();
     await Donation.deleteMany();
+    await Alert.deleteMany();
 
     console.log('Data destroyed!');
     process.exit();

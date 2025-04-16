@@ -25,6 +25,37 @@ exports.createSOSRequest = async (req, res, next) => {
   }
 };
 
+// @desc    Create a new anonymous SOS request (no authentication required)
+// @route   POST /api/sos/anonymous
+// @access  Public
+exports.createAnonymousSOSRequest = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Create a request with anonymous status
+    const anonymousRequest = {
+      emergency: req.body.emergency,
+      description: req.body.description,
+      location: req.body.location,
+      contactInfo: req.body.contactInfo, // Store contact information for follow-up
+      status: 'pending',
+      isAnonymous: true
+    };
+
+    const sosRequest = await SOSRequest.create(anonymousRequest);
+
+    res.status(201).json({
+      success: true,
+      data: sosRequest
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // @desc    Get all SOS requests
 // @route   GET /api/sos
 // @access  Private (Responders and Volunteers)

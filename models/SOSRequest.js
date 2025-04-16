@@ -4,7 +4,19 @@ const SOSRequestSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: function() {
+      return !this.isAnonymous;
+    }
+  },
+  isAnonymous: {
+    type: Boolean,
+    default: false
+  },
+  contactInfo: {
+    type: String,
+    required: function() {
+      return this.isAnonymous;
+    }
   },
   emergency: {
     type: String,

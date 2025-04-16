@@ -6,19 +6,42 @@ const DonationSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  donationType: {
+    type: String,
+    enum: ['resource', 'cash'],
+    default: 'resource',
+  },
+  amount: {
+    type: Number,
+    required: function() {
+      return this.donationType === 'cash';
+    },
+  },
+  paymentId: {
+    type: String,
+    required: function() {
+      return this.donationType === 'cash';
+    },
+  },
   resources: [{
     name: {
       type: String,
-      required: [true, 'Please provide a resource name'],
+      required: function() {
+        return this.donationType !== 'cash';
+      },
     },
     quantity: {
       type: Number,
-      required: [true, 'Please provide a quantity'],
+      required: function() {
+        return this.donationType !== 'cash';
+      },
       min: [1, 'Quantity must be at least 1'],
     },
     unit: {
       type: String,
-      required: [true, 'Please provide a unit of measurement'],
+      required: function() {
+        return this.donationType !== 'cash';
+      },
     },
   }],
   baseCamp: {

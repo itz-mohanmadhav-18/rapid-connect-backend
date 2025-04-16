@@ -15,6 +15,17 @@ exports.createDonation = async (req, res, next) => {
     // Add donor (user) to request body
     req.body.donor = req.user.id;
 
+    // Check if this is a cash donation 
+    if (req.body.donationType === 'cash') {
+      // Validate cash donation fields
+      if (!req.body.amount || !req.body.paymentId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Amount and payment ID are required for cash donations'
+        });
+      }
+    }
+
     const donation = await Donation.create(req.body);
 
     res.status(201).json({

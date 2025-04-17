@@ -42,6 +42,36 @@ exports.users = [
   }
 ];
 
+// Sample alerts
+exports.alerts = [
+  {
+    title: "URGENT: Flooding in Downtown Area",
+    description: "Rising water levels have trapped residents in the northern downtown sector. Immediate evacuation assistance needed.",
+    area: "Downtown Delhi",
+    severity: "critical",
+    status: "active",
+    affectedUsers: 2500,
+    location: {
+      type: 'Point',
+      coordinates: [77.1025, 28.7041],
+      address: 'Downtown Delhi, India'
+    }
+  },
+  {
+    title: "WARNING: Fire Risk in Western Region",
+    description: "High temperatures and dry conditions have created extreme fire risk. Residents advised to prepare for potential evacuation.",
+    area: "Western Delhi",
+    severity: "high",
+    status: "active",
+    affectedUsers: 1800,
+    location: {
+      type: 'Point',
+      coordinates: [77.0025, 28.6139],
+      address: 'Western Delhi, India'
+    }
+  }
+];
+
 // Sample base camps
 exports.baseCamps = [
   {

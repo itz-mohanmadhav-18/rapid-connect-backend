@@ -20,6 +20,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/sos', require('./routes/sosRoutes'));
 app.use('/api/basecamps', require('./routes/baseCampRoutes'));
 app.use('/api/donations', require('./routes/donationRoutes'));
+app.use('/api/alerts', require('./routes/alertRoutes'));
 
 // Base route
 app.get('/', (req, res) => {

@@ -5,7 +5,8 @@ const {
   getAlertById,
   updateAlert,
   deleteAlert,
-  getNearbyAlerts
+  getNearbyAlerts,
+  testNotifications
 } = require('../controllers/alertController');
 
 const router = express.Router();
@@ -15,6 +16,9 @@ const { protect, authorize } = require('../middleware/auth');
 
 // All routes are protected and only accessible to responders
 router.use(protect);
+
+// Test route for notifications
+router.route('/test-notifications').get(authorize('responder'), testNotifications);
 
 router
   .route('/')
